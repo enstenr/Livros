@@ -6,26 +6,49 @@ session_start();
 
 $user_id = $_SESSION['user_id'];
 
-if(!isset($user_id)){
-   header('location:login.php');
+if (!isset($user_id)) {
+    header('location:login.php');
 }
 
-if(isset($_POST['send'])){
+require_once __DIR__ . '/vendor/autoload.php';
 
-   $name = mysqli_real_escape_string($conn, $_POST['name']);
-   $email = mysqli_real_escape_string($conn, $_POST['email']);
-   $number = $_POST['number'];
-   $msg = mysqli_real_escape_string($conn, $_POST['message']);
+// Connect to MongoDB Database
+$databaseConnection = new MongoDB\Client;
 
-   $select_message = mysqli_query($conn, "SELECT * FROM `message` WHERE name = '$name' AND email = '$email' AND number = '$number' AND message = '$msg'") or die('query failed');
+// Connecting to specific database in MongoDB
+$myDatabase = $databaseConnection->Livros;
 
-   if(mysqli_num_rows($select_message) > 0){
-      $message[] = 'message déjà envoyé !';
-   }else{
-      mysqli_query($conn, "INSERT INTO `message`(user_id, name, email, number, message) VALUES('$user_id', '$name', '$email', '$number', '$msg')") or die('query failed');
-      $message[] = 'message envoyé avec succès!';
-   }
+// Connecting to our MongoDB Collections
+$userCollection = $myDatabase->messages;
 
+// Initialize variables to prevent undefined variable warnings
+$name = $email = $number = $msg = "";
+
+// Check if the form is submitted and the fields are not empty
+if (isset($_POST['send']) && !empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['number']) && !empty($_POST['message'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $number = $_POST['number'];
+    $msg = $_POST['message'];
+
+    // Create an array with the data to insert
+    $data = array(
+        "name" => $name,
+        "Email" => $email,
+        "Number" => $number,
+        "Message" => $msg
+    );
+
+    // Insert data into the database only if all fields are not empty
+    $insert = $userCollection->insertOne($data);
+
+    if ($insert) {
+        echo '<center><h4 style="color: green;">Message envoyé avec succès</h4></center>';
+    } else {
+        echo '<center><h4 style="color: red;">Le message na pas été envoyé</h4></center>';
+    }
+} else {
+    echo '<center><h4 style="color: red;">Veuillez remplir tous les champs du formulaire.</h4></center>';
 }
 
 ?>
@@ -58,21 +81,14 @@ if(isset($_POST['send'])){
 
    <form action="" method="post">
       <h3>N'hésitez pas à nous envoyer un message!</h3>
-      <input type="text" name="name" required placeholder="saisissez votre nom prenom" class="box">
-      <input type="email" name="email" required placeholder="votre adresse email" class="box">
-      <input type="number" name="number" required placeholder="votre numero de portable" class="box">
+      <input type="text" name="name" required placeholder="Saisissez votre nom prénom" class="box">
+      <input type="email" name="email" required placeholder="Votre adresse email" class="box">
+      <input type="number" name="number" required placeholder="Votre numéro de portable" class="box">
       <textarea name="message" class="box" placeholder="Écrivez votre message" id="" cols="30" rows="10"></textarea>
-      <input type="submit" value="envoyer" name="send" class="btn">
+      <input type="submit" value="Envoyer" name="send" class="btn">
    </form>
 
 </section>
-
-
-
-
-
-
-
 
 <?php include 'footer.php'; ?>
 

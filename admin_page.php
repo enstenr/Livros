@@ -9,7 +9,14 @@ $admin_id = $_SESSION['admin_id'];
 if(!isset($admin_id)){
    header('location:login.php');
 }
+// Include MongoDB library and connect to MongoDB
+require_once __DIR__ . '/vendor/autoload.php';
+$databaseConnection = new MongoDB\Client;
+$myDatabase = $databaseConnection->Livros;
+$messageCollection = $myDatabase->messages; 
 
+// Count the number of messages in the MongoDB collection
+$number_of_messages = $messageCollection->countDocuments();
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +91,7 @@ if(!isset($admin_id)){
             $number_of_products = mysqli_num_rows($select_products);
          ?>
          <h3><?php echo $number_of_products; ?></h3>
-         <p>nombre total de livres</p>
+         <p>total de livres</p>
       </div>
 
       <div class="box">
@@ -115,10 +122,7 @@ if(!isset($admin_id)){
       </div>
 
       <div class="box">
-         <?php 
-            $select_messages = mysqli_query($conn, "SELECT * FROM `message`") or die('query failed');
-            $number_of_messages = mysqli_num_rows($select_messages);
-         ?>
+         
          <h3><?php echo $number_of_messages; ?></h3>
          <p>nouveau messages</p>
       </div>
@@ -129,15 +133,6 @@ if(!isset($admin_id)){
 
 <!-- admin dashboard section ends -->
 
-
-
-
-
-
-
-
-
-<!-- custom admin js file link  -->
 <script src="js/admin_script.js"></script>
 
 </body>

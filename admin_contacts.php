@@ -35,44 +35,41 @@ if(isset($_GET['delete'])){
 </head>
 <body>
    
-<?php include 'admin_header.php'; ?>
+<?php 
+include 'admin_header.php'; 
+
+require_once __DIR__ . '/vendor/autoload.php'; // MongoDB PHP Library
+
+// Connect to MongoDB
+$databaseConnection = new MongoDB\Client;
+$myDatabase = $databaseConnection->Livros; 
+$messageCollection = $myDatabase->messages; 
+
+?>
 
 <section class="messages">
-
-   <h1 class="title"> messages </h1>
-
+   <h1 class="title">Messages</h1>
    <div class="box-container">
+
    <?php
-      $select_message = mysqli_query($conn, "SELECT * FROM `message`") or die('query failed');
-      if(mysqli_num_rows($select_message) > 0){
-         while($fetch_message = mysqli_fetch_assoc($select_message)){
-      
+   // Fetch all messages from MongoDB
+   $messages = $messageCollection->find();
+
+  
+   foreach ($messages as $message) {
    ?>
    <div class="box">
-      <p> user id : <span><?php echo $fetch_message['user_id']; ?></span> </p>
-      <p> nom prenom : <span><?php echo $fetch_message['name']; ?></span> </p>
-      <p> numero : <span><?php echo $fetch_message['number']; ?></span> </p>
-      <p> email : <span><?php echo $fetch_message['email']; ?></span> </p>
-      <p> message : <span><?php echo $fetch_message['message']; ?></span> </p>
-      <a href="admin_contacts.php?delete=<?php echo $fetch_message['id']; ?>" onclick="return confirm('supprimer ce message ?');" class="delete-btn">supprimer le message</a>
+      <p> User ID: <span><?php echo $message['_id']; ?></span></p> <!-- MongoDB auto-generated ID -->
+      <p> Nom Prénom: <span><?php echo htmlspecialchars($message['name']); ?></span></p>
+      <p> Numéro: <span><?php echo htmlspecialchars($message['Number']); ?></span></p>
+      <p> Email: <span><?php echo htmlspecialchars($message['Email']); ?></span></p>
+      <p> Message: <span><?php echo htmlspecialchars($message['Message']); ?></span></p>
+      <a href="admin_contacts.php?delete=<?php echo $message['_id']; ?>" onclick="return confirm('Supprimer ce message ?');" class="delete-btn">Supprimer le message</a>
    </div>
-   <?php
-      };
-   }else{
-      echo '<p class="empty">pas de messages!</p>';
-   }
-   ?>
+   <?php }  ?>
+   
    </div>
-
 </section>
-
-
-
-
-
-
-
-
 
 <!-- custom admin js file link  -->
 <script src="js/admin_script.js"></script>

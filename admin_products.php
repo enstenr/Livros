@@ -22,19 +22,19 @@ if(isset($_POST['add_product'])){
    $select_product_name = mysqli_query($conn, "SELECT name FROM `products` WHERE name = '$name'") or die('query failed');
 
    if(mysqli_num_rows($select_product_name) > 0){
-      $message[] = 'product name already added';
+      $message[] = 'nom du livre déjà ajouté';
    }else{
       $add_product_query = mysqli_query($conn, "INSERT INTO `products`(name, price, image) VALUES('$name', '$price', '$image')") or die('query failed');
 
       if($add_product_query){
          if($image_size > 2000000){
-            $message[] = 'image size is too large';
+            $message[] = 'la taille de image est trop grande';
          }else{
             move_uploaded_file($image_tmp_name, $image_folder);
-            $message[] = 'product added successfully!';
+            $message[] = 'livre ajouté avec succès!';
          }
       }else{
-         $message[] = 'product could not be added!';
+         $message[] = "le produit n'a pas pu être ajouté!";
       }
    }
 }
@@ -64,7 +64,7 @@ if(isset($_POST['update_product'])){
 
    if(!empty($update_image)){
       if($update_image_size > 2000000){
-         $message[] = 'image file size is too large';
+         $message[] = 'la taille de image est trop grande';
       }else{
          mysqli_query($conn, "UPDATE `products` SET image = '$update_image' WHERE id = '$update_p_id'") or die('query failed');
          move_uploaded_file($update_image_tmp_name, $update_folder);
