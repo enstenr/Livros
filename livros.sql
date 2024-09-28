@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2024 at 09:14 PM
+-- Generation Time: Sep 28, 2024 at 10:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,28 +39,6 @@ CREATE TABLE `cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `message`
---
-
-CREATE TABLE `message` (
-  `id` int(100) NOT NULL,
-  `user_id` int(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `number` varchar(12) NOT NULL,
-  `message` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `message`
---
-
-INSERT INTO `message` (`id`, `user_id`, `name`, `email`, `number`, `message`) VALUES
-(11, 3, 'JEAN marie', 'marie@test.com', '12345678', 'hello, good collection of book');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `orders`
 --
 
@@ -83,7 +61,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `method`, `address`, `total_products`, `total_price`, `placed_on`, `payment_status`) VALUES
-(12, 3, 'JEAN marie', '12345687', 'marie@test.com', 'paypal', '12, belaba, newtuj, france - 75142', ', The Happy Lemon (1) , La pensée positive (2) , Bash and Lucy (1) ', 59, '24-Sep-2024', 'completed');
+(12, 3, 'JEAN marie', '12345687', 'marie@test.com', 'paypal', '12, belaba, newtuj, france - 75142', ', The Happy Lemon (1) , La pensée positive (2) , Bash and Lucy (1) ', 59, '24-Sep-2024', 'completed'),
+(13, 1, 'JEAN marie', '12345687', 'marie@test.com', 'visa', '12, belaba, newtuj, france - 75142', ', Boring girls (1) , La pensée positive (1) , Holy Ghosts (1) ', 47, '27-Sep-2024', 'completed'),
+(14, 1, 'FABIEN CHANDON', '45555551223', 'njh@glaojk.com', 'visa', '25, venne alo, aunrtel, italy - 60248', ', Red Queen (1) ', 18, '27-Sep-2024', 'pending');
 
 -- --------------------------------------------------------
 
@@ -104,7 +84,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `price`, `image`) VALUES
 (1, 'Bash and Lucy', 20, 'bash_and_lucy-2.jpg'),
-(2, 'Boring girls', 15, 'boring_girls_a_novel.jpg'),
+(2, 'Boring girls', 20, 'boring_girls_a_novel.jpg'),
 (3, 'La pensée positive', 12, 'La-pensée-positive.jpg'),
 (4, 'Be Well Bee', 15, 'be_well_bee.jpg'),
 (5, 'Le yoga qui soigne', 20, 'Le yoga qui soigne.jpg'),
@@ -137,7 +117,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type`) VALUES
 (1, 'test@test.com', 'test@test.com', '098f6bcd4621d373cade4e832627b4f6', 'user'),
 (2, 'admin', 'admin01@gmail.com', '18c6d818ae35a3e8279b5330eda01498', 'admin'),
-(3, 'JEAN marie', 'marie@test.com', '81dc9bdb52d04dc20036dbd8313ed055', 'user');
+(3, 'JEAN marie', 'marie@test.com', '81dc9bdb52d04dc20036dbd8313ed055', 'user'),
+(4, 'Babiyola CHANDON', 'admin02@gmail.com', '6e60a28384bc05fa5b33cc579d040c56', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -147,12 +128,6 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type`) VALUES
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `message`
---
-ALTER TABLE `message`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -181,19 +156,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
-
---
--- AUTO_INCREMENT for table `message`
---
-ALTER TABLE `message`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -205,7 +174,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
