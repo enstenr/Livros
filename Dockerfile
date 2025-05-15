@@ -23,11 +23,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set working directory
 WORKDIR /var/www/html
 
+COPY composer.json composer.lock* /var/www/html/
+RUN git config --global --add safe.directory /var/www/html
+
+RUN composer install --prefer-dist --no-interaction --no-scripts --no-progress
+
 # Copy application code
 COPY . /var/www/html/
-
-# Install PHP dependencies with Composer
-RUN composer install
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
