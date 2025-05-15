@@ -3,6 +3,7 @@ FROM php:7.4-apache
 
 # Enable PDO and PDO_MySQL extensions
 RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Copy application code into the container
 COPY . /var/www/html/
