@@ -9,9 +9,7 @@ $admin_id = $_SESSION['admin_id'];
 if(!isset($admin_id)){
    header('location:login.php');
 }
-// Include MongoDB library and connect to MongoDB
-require_once __DIR__ . '/vendor/autoload.php';
-$databaseConnection = new MongoDB\Client;
+ 
 $myDatabase = $databaseConnection->Livros;
 $messageCollection = $myDatabase->messages; 
 

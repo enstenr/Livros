@@ -2,8 +2,6 @@ services:
   www:
     build: .
     #image: php:apache
-    volumes:
-      - ./src:/var/www/html
     ports:
       - "80:80"
       - "443:443"

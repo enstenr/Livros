@@ -20,14 +20,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin --filename=composer
 
 # Set working directory
-WORKDIR /app
+WORKDIR /var/www/html
 
 # Copy composer.json first and install dependencies
 COPY src/composer.json ./
 RUN composer install --prefer-dist --no-interaction --no-scripts --no-progress
 
 # Copy the rest of the app
-COPY . .
+COPY src/ .
 
 # Set safe Git config (fixes "dubious ownership" warnings)
 RUN git config --global --add safe.directory /var/www/html
